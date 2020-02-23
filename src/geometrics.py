@@ -11,7 +11,6 @@ import numpy as np
 def Rx(roll):
     """ Rotation matrix arround x (roll)
     """
-#    roll = np.radians(roll)
     return np.matrix([[1,            0,             0, 0],
                       [0, np.cos(roll), -np.sin(roll), 0],
                       [0, np.sin(roll),  np.cos(roll), 0],
@@ -20,7 +19,6 @@ def Rx(roll):
 def Ry(pitch):
     """ Rotation matrix arround y (pitch)
     """
-#    pitch = np.radians(pitch)
     return np.matrix([[ np.cos(pitch), 0, np.sin(pitch), 0],
                       [             0, 1,             0, 0],
                       [-np.sin(pitch), 0, np.cos(pitch), 0],
@@ -29,7 +27,6 @@ def Ry(pitch):
 def Rz(yaw):
     """ Rotation matrix arround z (yaw)
     """
-#    yaw = np.radians(yaw)
     return np.matrix([[np.cos(yaw), -np.sin(yaw), 0, 0],
                       [np.sin(yaw),  np.cos(yaw), 0, 0],
                       [          0,            0, 1, 0],
@@ -44,7 +41,7 @@ def Rxyz(roll , pitch , yaw):
     
 
 def RTmatrix(orientation, position):
-    "compose translation and rotation"
+    "translation and rotation compose"
     roll = orientation[0]
     pitch = orientation[1]
     yaw = orientation[2]
@@ -68,5 +65,6 @@ def transform(coord,rotation,translation):
                         [         1]])
     
     tranformVector = RTmatrix(rotation,translation)*vector
+    #the last element of the vector is depreciated
     return np.matrix([tranformVector[0,0], tranformVector[1,0], tranformVector[2,0]])
 
