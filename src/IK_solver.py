@@ -18,11 +18,13 @@ def checkdomain(D):
             return D
     else:
         return D
-    """Here i have to change the """
+
 def solve_R(coord):
-    x = coord[0,1]
-    y = -coord[0,2]
+    x = coord[0,1]  #it changes the body_frame to the leg_frame
+    y = -coord[0,2] #(which has different axis)
     z = -coord[0,0]
+    
+    """LEG DIMENTIONS"""
     coxa = 0.036
     femur = 0.11
     tibia = 0.11
@@ -35,9 +37,11 @@ def solve_R(coord):
     return angles
 
 def solve_L(coord):
-    x = coord[0,1]
-    y = -coord[0,2]
+    x = coord[0,1]  #it changes the body_frame to the leg_frame
+    y = -coord[0,2] #(which has different axis)
     z = -coord[0,0]
+    
+    """LEG DIMENTIONS"""
     coxa = -0.036
     femur = 0.11
     tibia = 0.11
