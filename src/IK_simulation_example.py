@@ -53,12 +53,11 @@ yawId = p.addUserDebugParameter("yaw" , -np.pi/4 , np.pi/4 , 0.)
 
 #robot properties
 """initial safe position"""
-#angles
 targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
                         0 , np.pi/4 , -np.pi/2, 0 ,#BL
                         0 , np.pi/4 , -np.pi/2, 0 ,#FL
                         0 , np.pi/4 , -np.pi/2, 0 ])#FR
-#FR_0  to FR_4 
+#FR_0  to FR_4 initial vectors
 #FRcoord = np.matrix([0. , -3.6 , -0.15])
 #FLcoord = np.matrix([0. ,  3.6 , -0.15])
 #BRcoord = np.matrix([0. , -3.6 , -0.15])
@@ -67,21 +66,23 @@ targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
 orientation = np.matrix([0. , 0. , 0.])
 position = np.matrix([0. , 0. , 0.])
 
-"IS units (m,kg,rad...) "
+"""IS units (m,kg,rad...) """
 L = 0.19 #length of robot joints
 W = 0.11 #width of robot joints
 
 "initial foot position"
-#foot separation (18.2 -> tetta=0) and distance to floor
-Ydist = 0.182
+distance to floor
+Ydist = 0.182 #foot separation on y axis (18.2 -> tetta=0)
 Xdist = L
-height = 0.15
-#body frame to coxa frame vector
+height = 0.15 #distance to floor
+
+#body_frame to coxa_frame vector
 bodytoFR0 = np.matrix([ L/2, -W/2 , 0])
 bodytoFL0 = np.matrix([ L/2,  W/2 , 0])
 bodytoBR0 = np.matrix([-L/2, -W/2 , 0])
 bodytoBL0 = np.matrix([-L/2,  W/2 , 0])
-#body frame to foot frame vector
+
+#body_frame to foot_frame vector
 bodytoFR4 = np.matrix([ Xdist/2 , -Ydist/2 , -height])
 bodytoFL4 = np.matrix([ Xdist/2 ,  Ydist/2 , -height])
 bodytoBR4 = np.matrix([-Xdist/2 , -Ydist/2 , -height])
@@ -92,7 +93,6 @@ bodytoBL4 = np.matrix([-Xdist/2 ,  Ydist/2 , -height])
 
 
 while(True):
-            ####orientacion de la camara
     cubePos, cubeOrn = p.getBasePositionAndOrientation(boxId)
     p.resetDebugVisualizerCamera( cameraDistance=cdist, cameraYaw=cyaw, cameraPitch=cpitch, cameraTargetPosition=cubePos)
     keys = p.getKeyboardEvents()
@@ -117,7 +117,7 @@ while(True):
     undoPos = [-p.readUserDebugParameter(xId), -p.readUserDebugParameter(yId), -p.readUserDebugParameter(zId)]
     undoOrn = [-p.readUserDebugParameter(rollId), -p.readUserDebugParameter(pitchId), -p.readUserDebugParameter(yawId)]
     
-    "defines 4 vertices which rotates with the body"
+    "defines the 4 vertices which rotates with the body"
     _bodytoFR0 = geo.transform(bodytoFR0 , orn, pos)
     _bodytoFL0 = geo.transform(bodytoFL0 , orn, pos)
     _bodytoBR0 = geo.transform(bodytoBR0 , orn, pos)
@@ -132,13 +132,13 @@ while(True):
     _FLcoord = geo.transform(FLcoord , undoOrn, undoPos)
     _BRcoord = geo.transform(BRcoord , undoOrn, undoPos)
     _BLcoord = geo.transform(BLcoord , undoOrn, undoPos)
-    print(FRcoord)
+    "solves the angles needed to reach the desire foot position(in the leg_frame)"
     FR_angles = IK.solve_R(_FRcoord)
     FL_angles = IK.solve_L(_FLcoord)
     BR_angles = IK.solve_R(_BRcoord)
     BL_angles = IK.solve_L(_BLcoord)
     
-    
+    #move the movable joints
     for i in range(0, footFR_index):
         targetAngs[0,i] = FR_angles[0,i - footFR_index]
         p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, targetAngs[0,i])
