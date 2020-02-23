@@ -72,7 +72,7 @@ W = 0.11 #width of robot joints
 
 "initial foot position"
 distance to floor
-Ydist = 0.182 #foot separation on y axis (18.2 -> tetta=0)
+Ydist = 0.182 #foot separation on y axis (0.182 -> tetta=0)
 Xdist = L
 height = 0.15 #distance to floor
 
