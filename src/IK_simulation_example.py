@@ -19,7 +19,7 @@ p.setGravity(0,0,-9.8)
 
 p.loadURDF("plane.urdf")
 cubeStartPos = [0,0,0.2]
-boxId = p.loadURDF("prueba.urdf",cubeStartPos, useFixedBase=False)
+boxId = p.loadURDF("4leggedRobot.urdf",cubeStartPos, useFixedBase=False)
 jointIds = []
 paramIds = [] 
 
