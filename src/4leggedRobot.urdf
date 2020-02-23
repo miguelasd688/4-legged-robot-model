@@ -1,0 +1,473 @@
+<?xml version="1.0"?>
+<robot name="materials">
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="0.8 0 0 1"/>
+  </material>
+
+  <link name="base_link">
+    <collision>
+        <geometry>
+          <box size="0.3 0.14 0.1"/>
+        </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.0000413575 0.00525148 -0.00174497"/>
+      <mass value="1.843" />
+      <inertia ixx="0.002480" ixy="9.381E-19" ixz="-3.172E-18"
+                              iyy="1.060E-02" iyz="1002.754E-09"
+                                              izz="1.243E-02" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.26 0.11 0.08"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+
+#FRONT RIGHT
+  <link name="coxa_FR">
+    <inertial>
+      <mass value="0.0827" />
+      <origin xyz="0.0973055 -0.0661692 -0.00513185"/>
+      <inertia ixx="-3.665E-04" ixy="7.991E-04"  ixz="-3.814E-04"
+                                iyy="-3.814E-04" iyz="-3.665E-04"
+                                                 izz="7.991E-04" />
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.02"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 -0.02 0"/>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_FR">
+    <inertial>
+      <mass value="0.1784" />
+      <origin xyz="0.0950414 -0.0741722 -0.0449003"/>
+      <inertia ixx="-3.556E-04" ixy="1.212E-03"  ixz="-5.705E-04"
+                                iyy="-5.705E-04" iyz="-3.556E-04"
+                                                 izz="1.212E-03" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_FR">
+    <inertial>
+      <mass value="0.0377" />
+      <origin xyz="0.0944505 -0.07488 -0.16028"/>
+      <inertia ixx="-2.113E-5" ixy="-6.005E-4" ixz="7.714E-4"
+                               iyy="7.714E-4"  iyz="-2.113E-5"
+                                               izz="-6.005E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_FR">
+    <collision>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.0044" />
+      <origin xyz="0.0895379 -0.0748802 -0.220739"/>
+      <inertia ixx="-649.799E-9" ixy="-1.743E-4" ixz="1.881E-4"
+                                 iyy="1.881E-4"  iyz="-649.799E-9"
+                                                 izz="-1.743E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  
+  <joint name="coxaF_FR" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_FR"/>
+    <origin xyz="0.095 -0.07 0"/>
+  </joint>
+
+  <joint name="femurF_FR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="coxa_FR"/>
+    <child link="femur_FR"/>
+    <origin xyz="0 -0.035 0"/>
+  </joint>
+
+  <joint name="tibiaF_FR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="femur_FR"/>
+    <child link="tibia_FR"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+  <joint name="footF_FR" type="fixed">
+    <parent link="tibia_FR"/>
+    <child link="foot_FR"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+
+
+
+#FRONT LEFT
+
+
+
+  <link name="coxa_FL">
+    <inertial>
+      <mass value="0.0827" />
+      <origin xyz="0.0973055 0.0764089 -0.00513185"/>
+      <inertia ixx="-2.456E-4" ixy="9.199E-4"  ixz="-3.814E-4"
+                               iyy="-3.814E-4" iyz="-2.456E-4"
+                                               izz="9.199E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.02"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0.02 0"/>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_FL">
+    <inertial>
+      <mass value="0.1784" />
+      <origin xyz="0.0950414 0.0844119 -0.0449003"/>  
+      <inertia ixx="-6.589E-5" ixy="1.502E-3"  ixz="-5.705E-4"
+                               iyy="-5.705E-4" iyz="-6.589E-5"
+                                               izz="1.502E-3" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_FL">
+   <inertial>
+      <mass value="0.0377" />
+      <origin xyz="0.0944494 0.0851198 -0.160284"/>
+      <inertia ixx="4.073E-5" ixy="-5.386E-4" ixz="7.713E-4"
+                              iyy="7.713E-4"  iyz="4.073E-5"
+                                              izz="-5.386E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_FL">
+    <collision>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.00044" />
+      <origin xyz="0.0895379 0.0851198 -0.220739"/>
+      <inertia ixx="6624.663E-9" ixy="-1.670E-4" ixz="1.881E-4"
+                                 iyy="1.881E-4"  iyz="6624.663E-9"
+                                                 izz="-1.670E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  
+  <joint name="coxaF_FL" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_FL"/>
+    <origin xyz="0.1 0.07 0"/>
+  </joint>
+
+  <joint name="femurF_FL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="coxa_FL"/>
+    <child link="femur_FL"/>
+    <origin xyz="0 0.035 0"/>
+  </joint>
+
+  <joint name="tibiaF_FL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="femur_FL"/>
+    <child link="tibia_FL"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+  <joint name="footF_FL" type="fixed">
+    <parent link="tibia_FL"/>
+    <child link="foot_FL"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+
+
+
+
+
+
+#BACK RIGHT
+
+
+
+
+
+
+  <link name="coxa_BR">
+    <inertial>
+      <mass value="0.178" />
+      <origin xyz="-0.0769834 -0.0607364 -0.00509226"/>
+      <inertia ixx="-2.958E-4" ixy="1.068E-3"  ixz="-7.127E-4"
+                               iyy="-7.127E-4" iyz="-2.958E-4"
+                                               izz="1.068E-3" />
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.02"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 -0.02 0"/>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_BR">
+    <inertial>
+      <mass value="0.1784" />
+      <origin xyz="-0.0949586 -0.0741722 -0.0449003"/>
+      <inertia ixx="-3.556E-4" ixy="1.209E-3"  ixz="-5.733E-4"
+                               iyy="-5.733E-4" iyz="-3.556E-4"
+                                               izz="1.209E-3" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_BR">
+    <inertial>
+      <mass value="0.039" />
+      <origin xyz="-0.095328 -0.0748802 -0.159807"/>
+      <inertia ixx="-2.958E-5" ixy="-6.085E-4" ixz="7.907E-4"
+                             iyy="7.907E-4"  iyz="-2.958E-5"
+                                           izz="-6.085E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_BR">
+    <collision>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.0044" />
+      <origin xyz="-0.100629 -0.0748802 -0.220419"/>
+      <inertia ixx="-1.010E-5" ixy="-1.643E-4" ixz="1.874E-4"
+                               iyy="1.874E-4"  iyz="-1.010E-5"
+                                               izz="-1.643E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  
+  <joint name="coxaF_BR" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_BR"/>
+    <origin xyz="-0.1 -0.07 0"/>
+  </joint>
+
+  <joint name="femurF_BR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="coxa_BR"/>
+    <child link="femur_BR"/>
+    <origin xyz="0 -0.035 0"/>
+  </joint>
+
+  <joint name="tibiaF_BR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="femur_BR"/>
+    <child link="tibia_BR"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+  <joint name="footF_BR" type="fixed">
+    <parent link="tibia_BR"/>
+    <child link="foot_BR"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+
+
+#BACK LEFT
+
+
+
+
+  <link name="coxa_BL">
+    <inertial>
+      <mass value="0.178" />
+      <origin xyz="-0.0769834 0.0709761 -0.00509226"/>
+      <inertia ixx="-5.574E-5" ixy="1.309E-3"   ixz="-7.127E-4"
+                               iyy="-7.127E-4"  iyz="-5.574E-5"
+                                                izz="1.309E-3" />
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.02"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0.02 0"/>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_BL">
+    <inertial>
+      <mass value="0.1784" />
+      <origin xyz="-0.0949586 0.0844119 -0.0449003"/>
+      <inertia ixx="-6.589E-5" ixy="1.499E-3"  ixz="-5.733E-4"
+                               iyy="-5.733E-4" iyz="-6.589E-5"
+                                               izz="1.499E-3" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_BL">
+    <inertial>
+      <mass value="0.039" />
+      <origin xyz="-0.0953282 0.0851197 -0.159807"/>
+      <inertia ixx="3.437E-5" ixy="-5.446E-4" ixz="7.906E-4"
+                              iyy="7.906E-4"  iyz="3.437E-5"
+                                              izz="-5.446E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.03 0.11"/>
+      </geometry>
+      <origin xyz="0 0 -0.055"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_BL">
+    <collision>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.0044" />
+      <origin xyz="-0.100629 0.0851198 -0.220419"/>
+      <inertia ixx="-2824.508E-9" ixy="-1.570E-4" ixz="1.874E-4"
+                                  iyy="1.874E-4"  iyz="-2824.508E-9"
+                                                  izz="-1.570E-4" />
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  
+  <joint name="coxaF_BL" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_BL"/>
+    <origin xyz="-0.1 0.07 0"/>
+  </joint>
+
+  <joint name="femurF_BL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="coxa_BL"/>
+    <child link="femur_BL"/>
+    <origin xyz="0 0.035 0"/>
+  </joint>
+
+  <joint name="tibiaF_BL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" velocity="0.5"/>
+    <parent link="femur_BL"/>
+    <child link="tibia_BL"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+
+  <joint name="footF_BL" type="fixed">
+    <parent link="tibia_BL"/>
+    <child link="foot_BL"/>
+    <origin xyz="0 0 -0.11"/>
+  </joint>
+</robot>
