@@ -18,7 +18,17 @@ def checkdomain(D):
             return D
     else:
         return D
-
+#this is based on this paper: 
+#"https://www.researchgate.net/publication/320307716_Inverse_Kinematic_Analysis_Of_A_Quadruped_Robot"
+"using pybullet frame"
+"  z                     "
+"    |                   "
+"    |                   "
+"    |    /  y           "
+"    |   /               "
+"    |  /                "
+"    | /                 "
+"    |/____________  x       "
 def solve_R(coord):
     x = coord[0,1]  #it changes the body_frame to the leg_frame
     y = -coord[0,2] #(which has different axis)
