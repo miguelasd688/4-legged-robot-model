@@ -1,109 +1,82 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 20 15:16:47 2020
+Created on Thu Feb 27 15:21:52 2020
 
 @author: linux-asd
 """
-
-import pybullet as p
 import numpy as np
-import time
-import pybullet_data
-from pybullet_debugger import pybulletDebug  
-from kinematic_model import robotKinematics
+import IKsolver as IK
+import geometrics as geo
 
-
-
-physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
-p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
-p.setGravity(0,0,-9.8)
-
-p.loadURDF("plane.urdf")
-cubeStartPos = [0,0,0.2]
-boxId = p.loadURDF("4leggedRobot.urdf",cubeStartPos, useFixedBase=False)
-jointIds = []
-paramIds = [] 
-
-for j in range(p.getNumJoints(boxId)):
-#    p.changeDynamics(boxId, j, linearDamping=0, angularDamping=0)
-    info = p.getJointInfo(boxId, j)
-    print(info)
-    jointName = info[1]
-    jointType = info[2]
-    jointIds.append(j)
-    
-footFR_index = 3
-footFL_index = 7
-footBR_index = 11
-footBL_index = 15   
-
-pybulletDebug = pybulletDebug()
-robotKinematics = robotKinematics()
-
-#robot properties
-"""initial safe position"""
-#angles
-targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
-                        0 , np.pi/4 , -np.pi/2, 0 ,#BL
-                        0 , np.pi/4 , -np.pi/2, 0 ,#FL
-                        0 , np.pi/4 , -np.pi/2, 0 ])#FR
-    
-#FR_0  to FR_4 
-#FRcoord = np.matrix([0. , -3.6 , -0.15])
-#FLcoord = np.matrix([0. ,  3.6 , -0.15])
-#BRcoord = np.matrix([0. , -3.6 , -0.15])
-#BLcoord = np.matrix([0. ,  3.6 , -0.15])
-
-
-"IS units (m,kg,rad...) "
-L = 0.19 #length of robot joints
-W = 0.11 #width of robot joints
-
-"initial foot position"
-#foot separation (0.182 -> tetta=0) and distance to floor
-Ydist = 0.11
-Xdist = L
-height = 0.15
-#body frame to coxa frame vector
-#bodytoFR0 = np.array([ L/2, -W/2 , 0])
-#bodytoFL0 = np.array([ L/2,  W/2 , 0])
-#bodytoBR0 = np.array([-L/2, -W/2 , 0])
-#bodytoBL0 = np.array([-L/2,  W/2 , 0])
-#body frame to foot frame vector
-bodytoFeet = np.matrix([[ Xdist/2 , -Ydist/2 , -height],
-                        [ Xdist/2 ,  Ydist/2 , -height],
-                        [-Xdist/2 , -Ydist/2 , -height],
-                        [-Xdist/2 ,  Ydist/2 , -height]])
-    
-
-orientation = np.array([0. , 0. , 0.])
-deviation = np.array([0. , 0. , 0.])
-
-while(True):
-    timeNow = time.time()
-
-    deviation , orientation = pybulletDebug.cam_and_robotstates(boxId)
-    
     #####################################################################################
     #####   kinematics Model: Input body orientation, deviation and foot position    ####
     #####   and get the angles, neccesary to reach that position, for every joint    ####
-    FR_angles, FL_angles, BR_angles, BL_angles = robotKinematics.solve(orientation , deviation , bodytoFeet)
+
+class robotKinematics:
+    def __init__(self):
+        self.targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
+                                     0 , np.pi/4 , -np.pi/2, 0 ,#BL
+                                     0 , np.pi/4 , -np.pi/2, 0 ,#FL
+                                     0 , np.pi/4 , -np.pi/2, 0 ])#FR
+                
+            
+        #FR_0  to FR_4 
+        #FRcoord = np.matrix([0. , -3.6 , -0.15])
+        #FLcoord = np.matrix([0. ,  3.6 , -0.15])
+        #BRcoord = np.matrix([0. , -3.6 , -0.15])
+        #BLcoord = np.matrix([0. ,  3.6 , -0.15])
+                
+        "in meter "
+        self.L = 0.19 #length of robot joints
+        self.W = 0.11 #width of robot joints
+        self.coxa = 0.036
+        self.femur = 0.11
+        self.tibia = 0.11
+        "initial foot position"
+        #foot separation (0.182 -> tetta=0) and distance to floor
+        self.Ydist = 0.11
+        self.Xdist = self.L
+        self.height = 0.15
+        #body frame to coxa frame vector
+        self.bodytoFR0 = np.array([ self.L/2, -self.W/2 , 0])
+        self.bodytoFL0 = np.array([ self.L/2,  self.W/2 , 0])
+        self.bodytoBR0 = np.array([-self.L/2, -self.W/2 , 0])
+        self.bodytoBL0 = np.array([-self.L/2,  self.W/2 , 0])
+        #body frame to foot frame vector
+        self.bodytoFR4 = np.array([ self.Xdist/2 , -self.Ydist/2 , -self.height])
+        self.bodytoFL4 = np.array([ self.Xdist/2 ,  self.Ydist/2 , -self.height])
+        self.bodytoBR4 = np.array([-self.Xdist/2 , -self.Ydist/2 , -self.height])
+        self.bodytoBL4 = np.array([-self.Xdist/2 ,  self.Ydist/2 , -self.height])
+
+    def solve(self, orn , pos , bodytoFeet):
+        bodytoFR4 = np.array([bodytoFeet[0,0],bodytoFeet[0,1],bodytoFeet[0,2]])
+        bodytoFL4 = np.array([bodytoFeet[1,0],bodytoFeet[1,1],bodytoFeet[1,2]])
+        bodytoBR4 = np.array([bodytoFeet[2,0],bodytoFeet[2,1],bodytoFeet[2,2]])
+        bodytoBL4 = np.array([bodytoFeet[3,0],bodytoFeet[3,1],bodytoFeet[3,2]])
+
+        "defines 4 vertices which rotates with the body"
+        _bodytoFR0 = geo.transform(self.bodytoFR0 , orn, pos)
+        _bodytoFL0 = geo.transform(self.bodytoFL0 , orn, pos)
+        _bodytoBR0 = geo.transform(self.bodytoBR0 , orn, pos)
+        _bodytoBL0 = geo.transform(self.bodytoBL0 , orn, pos)
+        "defines coxa_frame to foot_frame leg vector neccesary for IK"
+        FRcoord = bodytoFR4 - _bodytoFR0
+        FLcoord = bodytoFL4 - _bodytoFL0
+        BRcoord = bodytoBR4 - _bodytoBR0
+        BLcoord = bodytoBL4 - _bodytoBL0
+        "undo transformation of leg vector to keep feet still"
+        undoOrn = -orn
+        undoPos = -pos
+        _FRcoord = geo.transform(FRcoord , undoOrn, undoPos)
+        _FLcoord = geo.transform(FLcoord , undoOrn, undoPos)
+        _BRcoord = geo.transform(BRcoord , undoOrn, undoPos)
+        _BLcoord = geo.transform(BLcoord , undoOrn, undoPos)
     
-    #move movable joints
-    for i in range(0, footFR_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, FR_angles[i - footFR_index])
-    for i in range(footFR_index + 1, footFL_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, FL_angles[i - footFL_index])
-    for i in range(footFL_index + 1, footBR_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, BR_angles[i - footBR_index])
-    for i in range(footBR_index + 1, footBL_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, BL_angles[i - footBL_index])
-    #compute simulation
-    p.stepSimulation()
-    
-    lastTime = time.time()
-    loopTime = lastTime - timeNow
-    print(loopTime)
-    time.sleep(0.005)
-p.disconnect()
+        FR_angles = IK.solve_R(_FRcoord , self.coxa , self.femur , self.tibia)
+        FL_angles = IK.solve_L(_FLcoord , self.coxa , self.femur , self.tibia)
+        BR_angles = IK.solve_R(_BRcoord , self.coxa , self.femur , self.tibia)
+        BL_angles = IK.solve_L(_BLcoord , self.coxa , self.femur , self.tibia)
+        
+        return FR_angles, FL_angles, BR_angles, BL_angles
+
