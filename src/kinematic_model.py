@@ -12,7 +12,15 @@ import geometrics as geo
     #####################################################################################
     #####   kinematics Model: Input body orientation, deviation and foot position    ####
     #####   and get the angles, neccesary to reach that position, for every joint    ####
-
+    "using pybullet frame"
+"  z                     "
+"    |                   "
+"    |                   "
+"    |    /  y           "
+"    |   /               "
+"    |  /                "
+"    | /                 "
+"    |/_____________  x       "
 class robotKinematics:
     def __init__(self):
         self.targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
