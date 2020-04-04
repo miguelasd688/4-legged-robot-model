@@ -9,12 +9,12 @@ import numpy as np
 import IK_solver as IK
 import geometrics as geo
 
-#####################################################################################
-#####   kinematics Model: Input body orientation, deviation and foot position    ####
-#####   and get the angles, neccesary to reach that position, for every joint    ####
 
-'''
-    "using pybullet frame"
+    #####################################################################################
+    #####   kinematics Model: Input body orientation, deviation and foot position    ####
+    #####   and get the angles, neccesary to reach that position, for every joint    ####
+"""
+"using pybullet frame"
 "  z                     "
 "    |                   "
 "    |                   "
@@ -23,8 +23,7 @@ import geometrics as geo
 "    |  /                "
 "    | /                 "
 "    |/_____________  x       "
-'''
-
+"""
 class robotKinematics:
     def __init__(self):
         self.targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
@@ -32,20 +31,13 @@ class robotKinematics:
                                      0 , np.pi/4 , -np.pi/2, 0 ,#FL
                                      0 , np.pi/4 , -np.pi/2, 0 ])#FR
                 
-            
-        #FR_0  to FR_4 
-        #FRcoord = np.matrix([0. , -3.6 , -0.15])
-        #FLcoord = np.matrix([0. ,  3.6 , -0.15])
-        #BRcoord = np.matrix([0. , -3.6 , -0.15])
-        #BLcoord = np.matrix([0. ,  3.6 , -0.15])
-                
-        "in meter "
-        self.L = 0.19 #length of robot joints
-        self.W = 0.11 #width of robot joints
-        self.coxa = 0.036
-        self.femur = 0.11
-        self.tibia = 0.11
-        "initial foot position"
+        """in meter """
+        self.L = 0.192 #length of robot joints
+        self.W = 0.075 #width of robot joints
+        self.coxa = 0.04#coxa length
+        self.femur = 0.10#femur length
+        self.tibia = 0.10#tibia length
+        """initial foot position"""
         #foot separation (0.182 -> tetta=0) and distance to floor
         self.Ydist = 0.11
         self.Xdist = self.L
@@ -67,17 +59,17 @@ class robotKinematics:
         bodytoBR4 = np.array([bodytoFeet[2,0],bodytoFeet[2,1],bodytoFeet[2,2]])
         bodytoBL4 = np.array([bodytoFeet[3,0],bodytoFeet[3,1],bodytoFeet[3,2]])
 
-        "defines 4 vertices which rotates with the body"
+        """defines 4 vertices which rotates with the body"""
         _bodytoFR0 = geo.transform(self.bodytoFR0 , orn, pos)
         _bodytoFL0 = geo.transform(self.bodytoFL0 , orn, pos)
         _bodytoBR0 = geo.transform(self.bodytoBR0 , orn, pos)
         _bodytoBL0 = geo.transform(self.bodytoBL0 , orn, pos)
-        "defines coxa_frame to foot_frame leg vector neccesary for IK"
+        """defines coxa_frame to foot_frame leg vector neccesary for IK"""
         FRcoord = bodytoFR4 - _bodytoFR0
         FLcoord = bodytoFL4 - _bodytoFL0
         BRcoord = bodytoBR4 - _bodytoBR0
         BLcoord = bodytoBL4 - _bodytoBL0
-        "undo transformation of leg vector to keep feet still"
+        """undo transformation of leg vector to keep feet still"""
         undoOrn = -orn
         undoPos = -pos
         _FRcoord = geo.transform(FRcoord , undoOrn, undoPos)
@@ -91,4 +83,3 @@ class robotKinematics:
         BL_angles = IK.solve_L(_BLcoord , self.coxa , self.femur , self.tibia)
         
         return FR_angles, FL_angles, BR_angles, BL_angles
-
