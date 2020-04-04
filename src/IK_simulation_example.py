@@ -90,6 +90,12 @@ while(True):
     #####   and get the angles, neccesary to reach that position, for every joint    ####
     FR_angles, FL_angles, BR_angles, BL_angles = robotKinematics.solve(orientation , deviation , bodytoFeet)
     
+    # 2020-04-03 cyan adapt
+    FR_angles = FR_angles.tolist()[0]
+    FL_angles = FL_angles.tolist()[0]
+    BR_angles = BR_angles.tolist()[0]
+    BL_angles = BL_angles.tolist()[0]
+
     #move movable joints
     for i in range(0, footFR_index):
         p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, FR_angles[i - footFR_index])
@@ -104,6 +110,6 @@ while(True):
     
     lastTime = time.time()
     loopTime = lastTime - timeNow
-    print(loopTime)
+    # print(loopTime)
     time.sleep(0.005)
 p.disconnect()
