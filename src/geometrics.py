@@ -44,7 +44,7 @@ def Rxyz(roll , pitch , yaw):
     
 
 def RTmatrix(orientation, position):
-    "compose translation and rotation"
+    """compose translation and rotation"""
     roll = orientation[0]
     pitch = orientation[1]
     yaw = orientation[2]
@@ -61,7 +61,7 @@ def RTmatrix(orientation, position):
     return rotation*translation
     
 def transform(coord,rotation,translation):
-    "transforms a vector to a desire rotation and translation"
+    """transforms a vector to a desire rotation and translation"""
     vector = np.array([[coord[0]],
                        [coord[1]],
                        [coord[2]],
@@ -69,5 +69,4 @@ def transform(coord,rotation,translation):
     
     tranformVector = RTmatrix(rotation,translation)*vector
     return np.array([tranformVector[0,0], tranformVector[1,0], tranformVector[2,0]])
-
 
