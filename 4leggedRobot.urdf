@@ -470,3 +470,4 @@
     <child link="foot_BL"/>
     <origin xyz="0 0 -0.1"/>
   </joint>
+</robot>
