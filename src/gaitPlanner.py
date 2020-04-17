@@ -94,6 +94,7 @@ class trotGait:
         
     #computes step trajectory for every foot, defining L which is step length, its angle, offset between each foot, 
     #period of time of each step and the initial vector from center of robot to feet.
+    #defined in the foot local frame
     def loop(self , L , angle , Lrot , T , offset , bodytoFeet_ ):
         if (self.phi >= 0.99):
             self.lastTime= time.time()
