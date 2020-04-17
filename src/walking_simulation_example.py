@@ -10,9 +10,9 @@ import pybullet as p
 import numpy as np
 import time
 import pybullet_data
-from src.pybullet_debuger import pybulletDebug  
-from src.kinematic_model import robotKinematics
-from src.gaitPlanner import trotGait
+from pybullet_debuger import pybulletDebug  
+from kinematic_model import robotKinematics
+from gaitPlanner import trotGait
 
 physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
 p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
