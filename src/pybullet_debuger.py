@@ -18,26 +18,6 @@ class pybulletDebug:
         self.cdist=0.66
         time.sleep(0.5)
         
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Mar  2 22:15:21 2020
-
-@author: linux-asd
-"""
-import pybullet as p
-import time
-import numpy as np
-import sys
-
-class pybulletDebug:
-    def __init__(self):
-        #Camera paramers to be able to yaw pitch and zoom the camera (Focus remains on the robot) 
-        self.cyaw=90
-        self.cpitch=-7
-        self.cdist=0.66
-        time.sleep(0.5)
-        
         self.xId = p.addUserDebugParameter("x" , -0.10 , 0.10 , 0.)
         self.yId = p.addUserDebugParameter("y" , -0.10 , 0.10 , 0.)
         self.zId = p.addUserDebugParameter("z" , -0.10 , 0.10 , 0.)
