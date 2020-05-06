@@ -3,6 +3,7 @@
 
 (run: walking_simulation_example.py)
 
+
 -pybullet, numpy, evdev, pyserial and simple-pid needed to run the robot.
 
 (run: walking_robot.py)
