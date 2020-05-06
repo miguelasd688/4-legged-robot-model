@@ -1,4 +1,4 @@
-loaded by the urdf file. 
+These files are only loaded by the urdf file, used only for simulating
 physics imported from Fusion360 robot design
 
 base_link
