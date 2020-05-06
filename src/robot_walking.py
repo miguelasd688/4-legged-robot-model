@@ -12,12 +12,12 @@ import time
 import pybullet_data
 from simple_pid import PID 
 
-from src.pybullet_debuger import pybulletDebug  
-from src.kinematic_model import robotKinematics
-from src.joystick import Joystick
-from src.serial_com import ArduinoSerial
-from src import angleToPulse
-from src.gaitPlanner import trotGait
+import angleToPulse
+from pybullet_debuger import pybulletDebug  
+from kinematic_model import robotKinematics
+from joystick import Joystick
+from serial_com import ArduinoSerial
+from gaitPlanner import trotGait
 
 
 physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
