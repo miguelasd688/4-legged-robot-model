@@ -1,4 +1,6 @@
 # 4-legged-robot-model
+-Working on python3
+-
 -pybullet and numpy needed to run the simulation.
 
 (run: walking_simulation_example.py)
