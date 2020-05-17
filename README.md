@@ -13,4 +13,4 @@ _______________________________________________________________________
 
 more info at: https://www.youtube.com/channel/UCBpFFCjtieDb8WiO7yLvaBw
 
-              https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
+   https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
