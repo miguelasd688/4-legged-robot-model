@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Sun Mar 15 20:31:07 2020
@@ -48,8 +48,8 @@ footBL_index = 15
 
 pybulletDebug = pybulletDebug()
 robotKinematics = robotKinematics()
-joystick = Joystick('/dev/input/event18') #need to specify the event route
-arduino = ArduinoSerial('/dev/ttyACM1') #need to specify the serial port
+joystick = Joystick('/dev/input/event11') #need to specify the event route
+arduino = ArduinoSerial('/dev/ttyACM0') #need to specify the serial port
 trot = trotGait() 
 #robot properties
 """initial safe position"""
@@ -77,8 +77,8 @@ bodytoFeet0 = np.matrix([[ 0.08 , -0.07 , -height],
                          [-0.11 , -0.07 , -height],
                          [-0.11 ,  0.07 , -height]])
 
-orientation = np.array([0. , 0. , 0.])
-deviation = np.array([0. , 0. , 0.])
+orn = np.array([0. , 0. , 0.])
+pos = np.array([0. , 0. , 0.])
 lastTime = 0.
 
 
@@ -127,7 +127,8 @@ while(True):
     
     p.stepSimulation()#compute simulation
     
-    print(time.time() - startTime ,T)
+    print(time.time() - loopTime ,T)
 p.disconnect()
+
 
 
