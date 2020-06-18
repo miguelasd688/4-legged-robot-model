@@ -84,7 +84,7 @@ lastTime = 0.
 
 pidX = PID(-0.0005 , 0.0 , 0.000001 , setpoint=0.)
 pidY = PID(0.0005 , 0. , 0. , setpoint=0.)
-pidX.sample_time = 0.02  # update every 0.01 seconds
+pidX.sample_time = 0.02  # update every 0.02 seconds
 pidY.sample_time = 0.02  
 
 
@@ -110,7 +110,7 @@ while(True):
     #####################################################################################
     #####   kinematics Model: Input body orientation, deviation and foot position    ####
     #####   and get the angles, neccesary to reach that position, for every joint    ####
-    FR_angles, FL_angles, BR_angles, BL_angles , transformedBodytoFeet = robotKinematics.solve(orn , pos , bodytoFeet)
+    FR_angles, FL_angles, BR_angles, BL_angles , transformedBodytoFeet = robotKinematics.solve(orn , pos + commandCoM , bodytoFeet)
     pulsesCommand = angleToPulse.convert(FR_angles, FL_angles, BR_angles, BL_angles)
         
     arduino.serialSend(pulsesCommand)#send serial command to arduino
