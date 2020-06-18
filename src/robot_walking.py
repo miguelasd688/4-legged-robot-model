@@ -3,7 +3,7 @@
 """
 Created on Sun Mar 15 20:31:07 2020
 
-@author: linux-asd
+@author: miguel-asd
 """
 
 import pybullet as p
@@ -72,10 +72,10 @@ Ydist = 0.17
 Xdist = 0.25
 height = 0.17
 #body frame to foot frame vector
-bodytoFeet0 = np.matrix([[ Xdist/2 , -Ydist/2 , -height],
-                        [ Xdist/2 ,  Ydist/2 , -height],
-                        [-Xdist/2 , -Ydist/2 , -height],
-                        [-Xdist/2 ,  Ydist/2 , -height]])
+bodytoFeet0 = np.matrix([[ 0.08 , -0.07 , -height],
+                         [ 0.08 ,  0.07 , -height],
+                         [-0.11 , -0.07 , -height],
+                         [-0.11 ,  0.07 , -height]])
 
 orientation = np.array([0. , 0. , 0.])
 deviation = np.array([0. , 0. , 0.])
@@ -88,20 +88,22 @@ pidX.sample_time = 0.02  # update every 0.01 seconds
 pidY.sample_time = 0.02  
 
 
-T = 0.5 #period of time (in seconds) of every step
+T = 0.4 #period of time (in seconds) of every step
 offset = np.array([0.5 , 0. , 0. , 0.5]) #defines the offset between each foot step in this order (FR,FL,BR,BL)
+p.setRealTimeSimulation(1)
+p.setTimeStep(0.002)
 while(True):
-    startTime = time.time()
-    pos , orn , L , angle , Lrot , T = pybulletDebug.cam_and_robotstates(boxId)    
+    loopTime = time.time()
+    _ , _ , _ , _ , _ , _ = pybulletDebug.cam_and_robotstates(boxId)    
     
-    L , angle , Lrot , T  = joystick.read()    
+    commandCoM , V , angle , Wrot , T  , compliantMode , yaw , pitch  = joystick.read()    
     
     #calculates the feet coord for gait, defining length of the step and direction (0º -> forward; 180º -> backward)
-    bodytoFeet , s = trot.loop(L , angle , Lrot , T , offset , bodytoFeet0)
+    bodytoFeet = trot.loop(V , angle , Wrot , T , offset , bodytoFeet0)
     
     arduinoLoopTime , realRoll , realPitch = arduino.serialRecive()#recive serial message
 
-    pos[0] = 0.015 + pidX(realPitch)
+    pos[0] = pidX(realPitch)
     pos[1] = pidY(realRoll)
     
     
