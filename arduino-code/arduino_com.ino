@@ -12,7 +12,7 @@ Servo Servos[MAX_SERVOS];
 
 //VARIABLES PARA CONTROLAR EL TIEMPO
 unsigned long previousMillis = 0;
-const long interval = 15;
+const long interval = 20;
 unsigned long loopTime;
 unsigned long previousLooptime;
 double t;
@@ -41,7 +41,7 @@ int pulse;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(500000);
   
   IMUSetup();
   connectServos();
