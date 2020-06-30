@@ -66,7 +66,7 @@ while(True):
     lastTime = time.time()
     pos , orn , L , angle , Lrot , T = pybulletDebug.cam_and_robotstates(boxId)  
     #calculates the feet coord for gait, defining length of the step and direction (0º -> forward; 180º -> backward)
-    bodytoFeet , s = trot.loop(L , angle , Lrot , T , offset , bodytoFeet0)
+    bodytoFeet = trot.loop(L , angle , Lrot , T , offset , bodytoFeet0)
 
 #####################################################################################
 #####   kinematics Model: Input body orientation, deviation and foot position    ####
