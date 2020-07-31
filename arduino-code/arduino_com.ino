@@ -39,9 +39,17 @@ char a;
 int pulse;
 
 
+int batterieVoltage;
+
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(500000);
+  Serial.begin(115200);
+  
+  pinMode(13,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(11,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(9,OUTPUT);
   
   IMUSetup();
   connectServos();
@@ -67,28 +75,77 @@ void loop() {
           
       recvWithStartEndMarkers();
       
+      batterieStatus();
+      
       newData = false;
       moveServos(pulse0, pulse1, pulse2, pulse3, pulse4, pulse5, pulse6, pulse7, pulse8, pulse9, pulse10, pulse11);
   }
 }
 
+void batterieStatus(){
+  batterieVoltage = analogRead(A1);
+  
+  if (batterieVoltage >= 164){
+    digitalWrite(13,HIGH);
+    digitalWrite(12,HIGH);
+    digitalWrite(11,HIGH);
+    digitalWrite(10,HIGH);
+    digitalWrite(9,HIGH);
+  }
+  else if (batterieVoltage >= 154){
+    digitalWrite(13,HIGH);
+    digitalWrite(12,HIGH);
+    digitalWrite(11,HIGH);
+    digitalWrite(10,HIGH);
+    digitalWrite(9,LOW);
+  }
+  else if (batterieVoltage >= 144){
+    digitalWrite(13,HIGH);
+    digitalWrite(12,HIGH);
+    digitalWrite(11,HIGH);
+    digitalWrite(10,LOW);
+    digitalWrite(9,LOW);
+  }
+  else if (batterieVoltage >= 134){
+    digitalWrite(13,HIGH);
+    digitalWrite(12,HIGH);
+    digitalWrite(11,LOW);
+    digitalWrite(10,LOW);
+    digitalWrite(9,LOW);
+  }
+  else if (batterieVoltage >= 124){
+    digitalWrite(13,HIGH);
+    digitalWrite(12,LOW);
+    digitalWrite(11,LOW);
+    digitalWrite(10,LOW);
+    digitalWrite(9,LOW);
+  }
+  else{
+    digitalWrite(13,LOW);
+    digitalWrite(12,LOW);
+    digitalWrite(11,LOW);
+    digitalWrite(10,LOW);
+    digitalWrite(9,LOW);
+  }
+}
 
 void connectServos() {
-  Servos[0].attach(7);//FR
-  Servos[1].attach(6);//0=2500
-  Servos[2].attach(5);
+                      //FR
+  Servos[0].attach(40);//coxa
+  Servos[1].attach(38);//femur
+  Servos[2].attach(36);//tibia
 
-  Servos[3].attach(8);//FL
-  Servos[4].attach(9);//0=550
-  Servos[5].attach(10);
+  Servos[3].attach(42);//FL
+  Servos[4].attach(44);//0=550
+  Servos[5].attach(46);
 
-  Servos[6].attach(2);//BR
-  Servos[7].attach(3);//0=2500
-  Servos[8].attach(4);
+  Servos[6].attach(34);//BR
+  Servos[7].attach(32);//0=2500
+  Servos[8].attach(30);
 
-  Servos[9].attach(13);//BL
-  Servos[10].attach(12);//0=550
-  Servos[11].attach(11);
+  Servos[9].attach(48);//BL
+  Servos[10].attach(50);//0=550
+  Servos[11].attach(52);
 }
 
 
