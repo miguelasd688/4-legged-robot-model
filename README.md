@@ -17,9 +17,8 @@ You can also run its telemetry.
 (run: run_telemetry.py)
 _______________________________________________________________________
 
-more info at: https://www.youtube.com/channel/UCBpFFCjtieDb8WiO7yLvaBw
+All the info at:   https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
 
-   https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
 
 
 Here is a simple diagram of how the robot is working:
