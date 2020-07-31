@@ -4,12 +4,15 @@ This code is the last version that runs on the raspberry pi, for the simulation 
 
 Working on python3
 
--numpy, evdev, pyserial and simple-pid needed to run the robot.
+-numpy, csv , evdev , pyserial and simple-pid needed to run the robot.
 
 (run: robot_main_RPI.py)
 _______________________________________________________________________
 
--You can also run its telemetry. Pandas and matplotlib needed.
+
+You can also run its telemetry. 
+
+-Pandas and matplotlib needed.
 
 (run: run_telemetry.py)
 _______________________________________________________________________
