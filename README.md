@@ -1,14 +1,17 @@
 # 4-legged-robot-model
+
+This code is the last version that runs on the raspberry pi, for the simulation code that runs on PC check the old branch.
+
 Working on python3
 
--pybullet and numpy needed to run the simulation.
+-numpy, evdev, pyserial and simple-pid needed to run the robot.
 
-(run: walking_simulation_example.py)
+(run: robot_main_RPI.py)
 _______________________________________________________________________
 
--pybullet, numpy, evdev, pyserial and simple-pid needed to run the robot.
+-You can also run its telemetry. Pandas and matplotlib needed.
 
-(run: walking_robot.py)
+(run: run_telemetry.py)
 _______________________________________________________________________
 
 more info at: https://www.youtube.com/channel/UCBpFFCjtieDb8WiO7yLvaBw
