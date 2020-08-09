@@ -1,6 +1,7 @@
 # 4-legged-robot-model
 
-This code is the last version that runs on the raspberry pi, for the simulation code that runs on PC check the old branch.
+This code is the last version that runs on the raspberry pi,
+ for the simulation code that runs on PC and implements a PyBullet simulation, check the old branch (V1_PCsimulation).
 
 Working on python3
 
