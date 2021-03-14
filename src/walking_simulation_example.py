@@ -13,6 +13,7 @@ import pybullet_data
 from pybullet_debuger import pybulletDebug  
 from kinematic_model import robotKinematics
 from gaitPlanner import trotGait
+from src.state_stimator import systemStateEstimator
 
 physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
 p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
@@ -44,6 +45,7 @@ footBL_index = 15
 pybulletDebug = pybulletDebug()
 robotKinematics = robotKinematics()
 trot = trotGait() 
+meassure = systemStateEstimator(boxId) #meassure from simulation
 
 #robot properties
 """initial foot position"""
@@ -59,12 +61,20 @@ bodytoFeet0 = np.matrix([[ Xdist/2 , -Ydist/2 , -height],
 
 T = 0.5 #period of time (in seconds) of every step
 offset = np.array([0.5 , 0. , 0. , 0.5]) #defines the offset between each foot step in this order (FR,FL,BR,BL)
+bodytoFeet_vecX = 0.
+bodytoFeet_vecY = 0.
 
+
+pos = np.zeros([3])
+orn = np.zeros([3])
 p.setRealTimeSimulation(1)
-    
-while(True):
+p.setTimeStep(0.002)
+
+for i in range(100000):
     lastTime = time.time()
-    pos , orn , L , angle , Lrot , T = pybulletDebug.cam_and_robotstates(boxId)  
+    
+    
+    _ , _ , L , angle , Lrot , T = pybulletDebug.cam_and_robotstates(boxId)  
     #calculates the feet coord for gait, defining length of the step and direction (0º -> forward; 180º -> backward)
     bodytoFeet = trot.loop(L , angle , Lrot , T , offset , bodytoFeet0)
 
@@ -72,16 +82,22 @@ while(True):
 #####   kinematics Model: Input body orientation, deviation and foot position    ####
 #####   and get the angles, neccesary to reach that position, for every joint    ####
     FR_angles, FL_angles, BR_angles, BL_angles , transformedBodytoFeet = robotKinematics.solve(orn , pos , bodytoFeet)
-        
-    #move movable joints
-    for i in range(0, footFR_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, FR_angles[i - footFR_index])
-    for i in range(footFR_index + 1, footFL_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, FL_angles[i - footFL_index])
-    for i in range(footFL_index + 1, footBR_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, BR_angles[i - footBR_index])
-    for i in range(footBR_index + 1, footBL_index):
-        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, BL_angles[i - footBL_index])
+            
+    t , X = meassure.states()
+    U , Ui ,torque = meassure.controls()
+    bodytoFeet_vecX = np.append(bodytoFeet_vecX , bodytoFeet[0,0])
+    bodytoFeet_vecY = np.append(bodytoFeet_vecY , bodytoFeet[0,2])
     
+    #move movable joints
+    for i in range(3):
+        p.setJointMotorControl2(boxId, i, p.POSITION_CONTROL, 
+                                targetPosition = FR_angles[i] , force = maxForce , maxVelocity = masVel)
+        p.setJointMotorControl2(boxId, 4 + i, p.POSITION_CONTROL, 
+                                targetPosition = FL_angles[i] , force = maxForce , maxVelocity = masVel)
+        p.setJointMotorControl2(boxId, 8 + i, p.POSITION_CONTROL, 
+                                targetPosition = BR_angles[i] , force = maxForce , maxVelocity = masVel)
+        p.setJointMotorControl2(boxId, 12 + i, p.POSITION_CONTROL, 
+                                targetPosition = BL_angles[i] , force = maxForce , maxVelocity = masVel)
+     
 #    print(time.time() - lastTime)
 p.disconnect()
