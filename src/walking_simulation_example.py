@@ -48,6 +48,8 @@ trot = trotGait()
 meassure = systemStateEstimator(boxId) #meassure from simulation
 
 #robot properties
+maxForce = 200 #N/m
+masVel = 3.703 #rad/s
 """initial foot position"""
 #foot separation (Ydist = 0.16 -> tetta=0) and distance to floor
 Xdist = 0.20
