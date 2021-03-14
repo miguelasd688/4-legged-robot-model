@@ -13,7 +13,7 @@ import pybullet_data
 from pybullet_debuger import pybulletDebug  
 from kinematic_model import robotKinematics
 from gaitPlanner import trotGait
-from src.state_stimator import systemStateEstimator
+from state_stimator import systemStateEstimator
 
 physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
 p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
