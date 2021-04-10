@@ -149,9 +149,9 @@ if __name__ == '__main__':
     #p.startStateLogging(p.STATE_LOGGING_VIDEO_MP4, "robot.mp4")
     for k_ in range(0,N_steps):
         lastTime = time.time()
-        pos , orn , L , angle , Lrot , T = pybulletDebug.cam_and_robotstates(bodyId)
+        pos , orn , L , angle , Lrot , T , sda= pybulletDebug.cam_and_robotstates(bodyId)
         #calculates the feet coord for gait, defining length of the step and direction (0º -> forward; 180º -> backward)
-        bodytoFeet = trot.loop( L , angle , Lrot , T , offset , bodytoFeet0)
+        bodytoFeet = trot.loop( L , angle , Lrot , T , offset , bodytoFeet0 , sda)
         # out[0,k_]=k_*dT
         # out[1:4,k_]=bodytoFeet[0]
         # out[4:7,k_]=bodytoFeet[1]
