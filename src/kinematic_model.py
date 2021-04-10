@@ -3,11 +3,11 @@
 """
 Created on Thu Feb 27 15:21:52 2020
 
-@author: miguel-asd
+@author: mmiguel-asd
 """
 import numpy as np
-from src import IK_solver as IK
-from src import geometrics as geo
+from . import IK_solver 
+from . import geometrics
 
 
     #####################################################################################
@@ -26,22 +26,22 @@ from src import geometrics as geo
 """
 class robotKinematics:
     def __init__(self):
-        self.targetAngs = np.matrix([0 , np.pi/4 , -np.pi/2, 0 ,#BR
-                                     0 , np.pi/4 , -np.pi/2, 0 ,#BL
-                                     0 , np.pi/4 , -np.pi/2, 0 ,#FL
-                                     0 , np.pi/4 , -np.pi/2, 0 ])#FR
+        self.targetAngs = np.matrix([0 , 0 , -0, 0 ,#BR
+                                     0 , 0 , -0, 0 ,#BL
+                                     0 , 0 , -0, 0 ,#FL
+                                     0 , 0 , -0, 0 ])#FR
                 
         """in meter """
-        self.L = 0.193 #length of robot joints
-        self.W = 0.077 #width of robot joints
-        self.coxa = 0.05#coxa length
-        self.femur = 0.10#femur length
-        self.tibia = 0.10#tibia length
+        self.L = .18 #length of robot joints
+        self.W = 0.064 #width of robot joints
+        self.coxa = 0.0375 #coxa length
+        self.femur = 0.08 #femur length
+        self.tibia = 0.08 #tibia length
         """initial foot position"""
         #foot separation (0.182 -> tetta=0) and distance to floor
-        self.Ydist = 0.11
+        self.Ydist = 11.
         self.Xdist = self.L
-        self.height = 0.15
+        self.height = 15.
         #body frame to coxa frame vector
         self.bodytoFR0 = np.array([ self.L/2, -self.W/2 , 0])
         self.bodytoFL0 = np.array([ self.L/2,  self.W/2 , 0])
@@ -60,10 +60,10 @@ class robotKinematics:
         bodytoBL4 = np.asarray([bodytoFeet[3,0],bodytoFeet[3,1],bodytoFeet[3,2]])
 
         """defines 4 vertices which rotates with the body"""
-        _bodytoFR0 = geo.transform(self.bodytoFR0 , orn, pos)
-        _bodytoFL0 = geo.transform(self.bodytoFL0 , orn, pos)
-        _bodytoBR0 = geo.transform(self.bodytoBR0 , orn, pos)
-        _bodytoBL0 = geo.transform(self.bodytoBL0 , orn, pos)
+        _bodytoFR0 = geometrics.transform(self.bodytoFR0 , orn, pos)
+        _bodytoFL0 = geometrics.transform(self.bodytoFL0 , orn, pos)
+        _bodytoBR0 = geometrics.transform(self.bodytoBR0 , orn, pos)
+        _bodytoBL0 = geometrics.transform(self.bodytoBL0 , orn, pos)
         """defines coxa_frame to foot_frame leg vector neccesary for IK"""
         FRcoord = bodytoFR4 - _bodytoFR0
         FLcoord = bodytoFL4 - _bodytoFL0
@@ -72,16 +72,17 @@ class robotKinematics:
         """undo transformation of leg vector to keep feet still"""
         undoOrn = -orn
         undoPos = -pos
-        _FRcoord = geo.transform(FRcoord , undoOrn, undoPos)
-        _FLcoord = geo.transform(FLcoord , undoOrn, undoPos)
-        _BRcoord = geo.transform(BRcoord , undoOrn, undoPos)
-        _BLcoord = geo.transform(BLcoord , undoOrn, undoPos)
+        _FRcoord = geometrics.transform(FRcoord , undoOrn, undoPos)
+        _FLcoord = geometrics.transform(FLcoord , undoOrn, undoPos)
+        _BRcoord = geometrics.transform(BRcoord , undoOrn, undoPos)
+        _BLcoord = geometrics.transform(BLcoord , undoOrn, undoPos)
         
-        
-        FR_angles = IK.solve_R(_FRcoord , self.coxa , self.femur , self.tibia)
-        FL_angles = IK.solve_L(_FLcoord , self.coxa , self.femur , self.tibia)
-        BR_angles = IK.solve_R(_BRcoord , self.coxa , self.femur , self.tibia)
-        BL_angles = IK.solve_L(_BLcoord , self.coxa , self.femur , self.tibia)
+#        print(_FRcoord,_BRcoord)
+        FR_angles = IK_solver.solve_FR(_FRcoord , self.coxa , self.femur , self.tibia)
+        FL_angles = IK_solver.solve_FL(_FLcoord , self.coxa , self.femur , self.tibia)
+        BR_angles = IK_solver.solve_BR(_BRcoord , self.coxa , self.femur , self.tibia)
+        BL_angles = IK_solver.solve_BL(_BLcoord , self.coxa , self.femur , self.tibia)
+
         
         _bodytofeetFR = _bodytoFR0 + _FRcoord
         _bodytofeetFL = _bodytoFL0 + _FLcoord
