@@ -482,3 +482,441 @@
     <origin xyz="0.05657 -0.0375 -0.05657"/>
   </joint>
 </robot>
+                                                 izz="9.506E-05" />
+    </inertial>    
+    <visual>
+      <origin rpy="1.57 0 -1.57" xyz='0 0.025 0'/>
+      <geometry>
+        <mesh filename="package://STL_simulation/FR_coxa.stl"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_FR">
+    <inertial>
+      <origin xyz="-0.022  0.039  -0.022"/>
+      <mass value="0.019" />
+      <inertia ixx="7.727E-06" ixy="3.827E-07"  ixz="-7.075E-06"
+                                iyy="1.469E-05" iyz="3.939E-07"
+                                                 izz="7.754E-06" />
+    </inertial>   
+    <visual>
+      <geometry>
+        <mesh filename="package://STL_simulation/FR_femur.stl"/>
+      </geometry>
+      <origin rpy="1.57 0 -1.57" xyz="0 0.025 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_FR">
+    <inertial>
+      <origin xyz="-0.02757  0.0  -0.02757"/>
+      <mass value="0.02" />
+      <inertia ixx="1.036E-05" ixy="1.00E-9" ixz="8.137E-06"
+                               iyy="1.683E-05"  iyz="1.00E-9"
+                                               izz="8.807E-06" />
+    </inertial>   
+    <visual>
+      <origin rpy="1.57 0 -1.57"  xyz="-0.05657 0.025 0.05657"/>
+      <geometry>
+        <mesh filename="package://STL_simulation/FR_tibia.stl"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_FR">
+    <collision>
+      <!--origin rpy="1.57 0 -1.57"  xyz="-0.097 0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/FR_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <!--inertial>
+      <mass value="0.0044" />
+      <inertia ixx="7.04E-7" ixy="0.00" ixz="0.00"
+                                 iyy="7.04E-7"  iyz="0.00"
+                                                 izz="7.04E-7" />
+    </inertial-->   
+    <visual>
+      <!--origin rpy="1.57 0 -1.57"  xyz="-0.097 0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/FR_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  <!---joints--->
+  <joint name="coxaF_FR" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_FR"/>
+    <origin xyz="-0.097 0.032 0"/>
+  </joint>
+
+  <joint name="femurF_FR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="coxa_FR"/>
+    <child link="femur_FR"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <joint name="tibiaF_FR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="femur_FR"/>
+    <child link="tibia_FR"/>
+    <origin xyz="0.05657 0 -0.05657"/>
+  </joint>
+
+  <joint name="footF_FR" type="fixed">
+    <parent link="tibia_FR"/>
+    <child link="foot_FR"/>
+    <origin xyz="-0.05657 0.0375 -0.05657"/>
+  </joint>
+
+
+
+
+#FRONT LEFT
+
+
+  <link name="coxa_FL">
+    <inertial>
+      <origin xyz="-0.013  -0.0  -0.01"/>
+      <mass value="0.193" />
+      <inertia ixx="4.336E-05" ixy="-1.969E-07"  ixz="-3.043E-07"
+                                iyy="1.083E-04" iyz="1.815E-07"
+                                                 izz="9.506E-05" />
+    </inertial>    
+    <visual>
+      <origin rpy="1.57 0 1.57" xyz='0 -0.025 0'/>
+      <geometry>
+        <mesh filename="package://STL_simulation/FL_coxa.stl"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_FL">
+    <inertial>
+      <origin xyz="-0.022  -0.039  -0.022"/>
+      <mass value="0.019" />
+      <inertia ixx="7.727E-06" ixy="-3.827E-07"  ixz="-7.075E-06"
+                                iyy="1.469E-05" iyz="-3.939E-07"
+                                                 izz="7.754E-06" />
+    </inertial>   
+    <visual>
+      <geometry>
+        <mesh filename="package://STL_simulation/FL_femur.stl"/>
+      </geometry>
+      <origin rpy="1.57 0 1.57" xyz="0 -0.025 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_FL">
+    <inertial>
+      <origin xyz="-0.02757  0.0  -0.02757"/>
+      <mass value="0.02" />
+      <inertia ixx="1.036E-05" ixy="1.00E-9" ixz="8.137E-06"
+                               iyy="1.683E-05"  iyz="1.00E-9"
+                                               izz="8.807E-06" />
+    </inertial>   
+    <visual>
+      <origin rpy="1.57 0 1.57"  xyz="-0.05657 -0.025 0.05657"/>
+      <geometry>
+        <mesh filename="package://STL_simulation/FL_tibia.stl"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_FL">
+    <collision>
+      <!--origin rpy="1.57 0 1.57"  xyz="-0.097 -0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/FL_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <!--inertial>
+      <mass value="0.0044" />
+      <inertia ixx="7.04E-7" ixy="0.00" ixz="0.00"
+                                 iyy="7.04E-7"  iyz="0.00"
+                                                 izz="7.04E-7" />
+    </inertial-->   
+    <visual>
+      <!--origin rpy="1.57 0 1.57"  xyz="-0.097 -0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/FL_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  <!---joints--->
+  <joint name="coxaF_FL" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_FL"/>
+    <origin xyz="-0.097 -0.032 0"/>
+  </joint>
+
+  <joint name="femurF_FL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="coxa_FL"/>
+    <child link="femur_FL"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <joint name="tibiaF_FL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200" velocity="0.5"/>
+    <parent link="femur_FL"/>
+    <child link="tibia_FL"/>
+    <origin xyz="0.05657 0 -0.05657"/>
+  </joint>
+
+  <joint name="footF_FL" type="fixed">
+    <parent link="tibia_FL"/>
+    <child link="foot_FL"/>
+    <origin xyz="-0.05657 -0.0375 -0.05657"/>
+  </joint>
+
+
+
+
+
+
+#BACK RIGHT
+
+
+
+
+
+  <link name="coxa_BR">
+    <inertial>
+      <origin xyz="0.013  0.0  -0.01"/>
+      <mass value="0.193" />
+      <inertia ixx="4.336E-05" ixy="-1.969E-07"  ixz="3.043E-07"
+                                iyy="1.083E-04" iyz="-1.815E-07"
+                                                 izz="9.506E-05" />
+    </inertial>    
+    <visual>
+      <origin rpy="1.57 0 -1.57" xyz='0 0.025 0'/>
+      <geometry>
+        <mesh filename="package://STL_simulation/BR_coxa.stl"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_BR">
+    <inertial>
+      <origin xyz="0.022  0.039  -0.022"/>
+      <mass value="0.019" />
+      <inertia ixx="7.727E-06" ixy="-3.827E-07"  ixz="7.075E-06"
+                                iyy="1.469E-05" iyz="3.939E-07"
+                                                 izz="7.754E-06" />
+    </inertial>   
+    <visual>
+      <geometry>
+        <mesh filename="package://STL_simulation/BR_femur.stl"/>
+      </geometry>
+      <origin rpy="1.57 0 -1.57" xyz="0 0.025 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_BR">
+    <inertial>
+      <origin xyz="0.02757  0.0  -0.02757"/>
+      <mass value="0.02" />
+      <inertia ixx="1.036E-05" ixy="1.00E-9" ixz="-8.137E-06"
+                               iyy="1.683E-05"  iyz="1.00E-9"
+                                               izz="8.807E-06" />
+    </inertial>   
+    <visual>
+      <geometry>
+        <mesh filename="package://STL_simulation/BR_tibia.stl"/>
+      </geometry>
+      <origin rpy="1.57 0 -1.57"  xyz="0.05657 0.025 0.05657"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_BR">
+    <collision>
+      <!--origin rpy="1.57 0 -1.57"  xyz="0.097 0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/BR_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <!--inertial>
+      <mass value="0.0044" />
+      <inertia ixx="7.04E-7" ixy="0.00" ixz="0.00"
+                                 iyy="7.04E-7"  iyz="0.00"
+                                                 izz="7.04E-7" />
+    </inertial-->   
+    <visual>
+      <!--origin rpy="1.57 0 -1.57"  xyz="0.097 0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/BR_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+<!---joints--->
+  <joint name="coxaF_BR" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_BR"/>
+    <origin xyz="0.097 0.032 0"/>
+  </joint>
+
+  <joint name="femurF_BR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="coxa_BR"/>
+    <child link="femur_BR"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <joint name="tibiaF_BR" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200.0" velocity="0.5"/>
+    <parent link="femur_BR"/>
+    <child link="tibia_BR"/>
+    <origin xyz="-0.05657 0 -0.05657"/>
+  </joint>
+
+  <joint name="footF_BR" type="fixed">
+    <parent link="tibia_BR"/>
+    <child link="foot_BR"/>
+    <origin xyz="0.05657 0.0375 -0.05657"/>
+  </joint>
+
+
+#BACK LEFT
+
+
+
+
+    <link name="coxa_BL">
+    <inertial>
+      <origin xyz="0.013  -0.0  -0.01"/>
+      <mass value="0.193" />
+      <inertia ixx="4.336E-05" ixy="1.971E-07"  ixz="3.048E-07"
+                                iyy="1.083E-04" iyz="1.813E-07"
+                                                 izz="9.506E-05" />
+    </inertial>    
+    <visual>
+      <origin rpy="1.57 0 1.57" xyz='0 -0.025 0'/>
+      <geometry>
+        <mesh filename="package://STL_simulation/BL_coxa.stl"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="femur_BL">
+    <inertial>
+      <origin xyz="0.022  -0.039  -0.022"/>
+      <mass value="0.019" />
+      <inertia ixx="7.727E-06" ixy="3.827E-07"  ixz="7.075E-06"
+                                iyy="1.469E-05" iyz="-3.939E-07"
+                                                 izz="7.754E-06" />
+    </inertial>   
+    <visual>
+      <origin rpy="1.57 0 1.57" xyz="0 -0.025 0"/>
+      <geometry>
+        <mesh filename="package://STL_simulation/BL_femur.stl"/>
+      </geometry>
+      
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="tibia_BL">
+    <inertial>
+      <origin xyz="0.02757  -0.0  -0.02757"/>
+      <mass value="0.034" />
+      <inertia ixx="1.036E-05" ixy="1.00E-9" ixz="-8.137E-06"
+                               iyy="1.683E-05"  iyz="1.00E-9"
+                                               izz="8.807E-06" />
+    </inertial>   
+    <visual>
+      <geometry>
+        <mesh filename="package://STL_simulation/BL_tibia.stl"/>
+      </geometry>
+      <origin rpy="1.57 0 1.57"  xyz="0.05657 -0.025 0.05657"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="foot_BL">
+    <collision>
+      <!--origin rpy="1.57 0 1.57"  xyz="0.097 -0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/BL_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <!--inertial>
+      <mass value="0.0044" />
+      <inertia ixx="7.04E-7" ixy="0.00" ixz="0.00"
+                                 iyy="7.04E-7"  iyz="0.00"
+                                                 izz="7.04E-7" />
+    </inertial-->   
+    <visual>
+      <!--origin rpy="1.57 0 1.57"  xyz="0.097 -0.0695 -0.1131"/-->
+      <geometry>
+        <!--mesh filename="package://STL_simulation/BL_foot.stl"/-->
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+<!---joints--->
+  <joint name="coxaF_BL" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="200" velocity="0.5"/>
+    <parent link="base_link"/>
+    <child link="coxa_BL"/>
+    <origin xyz="0.097 -0.032 0"/>
+  </joint>
+
+  <joint name="femurF_BL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200" velocity="0.50"/>
+    <parent link="coxa_BL"/>
+    <child link="femur_BL"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <joint name="tibiaF_BL" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="200" velocity="0.50"/>
+    <parent link="femur_BL"/>
+    <child link="tibia_BL"/>
+    <origin xyz="-0.05657 0 -0.05657"/>
+  </joint>
+
+  <joint name="footF_BL" type="fixed">
+    <parent link="tibia_BL"/>
+    <child link="foot_BL"/>
+    <origin xyz="0.05657 -0.0375 -0.05657"/>
+  </joint>
+</robot>
