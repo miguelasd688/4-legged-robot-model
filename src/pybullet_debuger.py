@@ -112,21 +112,3 @@ class pybulletDebug:
                                     [BL_coxa_angle , BL_femur_angle , BL_tibia_angle]])
     
         return debugOutput
-        if keys.get(122):  #Z
-            self.cdist+=0.01
-        if keys.get(120):  #X
-            self.cdist-=0.01
-        if keys.get(27):  #ESC
-            p.disconnect()
-            time.sleep(2)
-            
-#            sys.exit()
-        #read position from debug
-        pos = np.array([p.readUserDebugParameter(self.xId),p.readUserDebugParameter(self.yId), p.readUserDebugParameter(self.zId)])
-        orn = np.array([p.readUserDebugParameter(self.rollId),p.readUserDebugParameter(self.pitchId), p.readUserDebugParameter(self.yawId)])
-        L = p.readUserDebugParameter(self.LId)
-        Lrot = p.readUserDebugParameter(self.LrotId)
-        angle = p.readUserDebugParameter(self.angleId)
-        T = p.readUserDebugParameter(self.periodId)
-        
-        return pos , orn , L , angle , Lrot , T , p.readUserDebugParameter(self.step_dur_asym)
