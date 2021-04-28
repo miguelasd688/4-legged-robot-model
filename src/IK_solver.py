@@ -37,45 +37,32 @@ def checkdomain(D):
 #             0 , -np.pi/4. , np.pi/2., 0 ,#FL
 #             0 , -np.pi/4. , np.pi/2., 0 ]#FR
 #IK equations written in pybullet frame.
-def solve_FR(coord , coxa , femur , tibia): 
+def IK(coord , coxa , femur , tibia , sign): 
     D = (coord[1]**2+coord[2]**2-coxa**2+coord[0]**2-femur**2-tibia**2)/(2*tibia*femur)  #siempre <1
     D = checkdomain(D)
-    gamma = np.arctan2(np.sqrt(1-D**2),D)
+    gamma = sign*np.arctan2(np.sqrt(1-D**2),D)
     tetta = -np.arctan2(-coord[2],coord[1])-np.arctan2(np.sqrt(coord[1]**2+coord[2]**2-coxa**2),-coxa)
     alpha = np.arctan2(coord[0],np.sqrt(coord[1]**2+coord[2]**2-coxa**2))-np.arctan2(tibia*np.sin(gamma),femur+tibia*np.cos(gamma))
-    angles = np.array([tetta, alpha+np.pi/4., gamma-np.pi/2.])
+    angles = np.array([tetta, alpha, gamma])
     return angles
 
-def solve_FL(coord , coxa , femur , tibia):
-    D = (coord[1]**2+(-coord[2])**2-coxa**2+coord[0]**2-femur**2-tibia**2)/(2*tibia*femur)  #siempre <1
-    D = checkdomain(D)
-    gamma = np.arctan2(np.sqrt(1-D**2),D)
-    tetta = -np.arctan2(-coord[2],coord[1])-np.arctan2(np.sqrt(coord[1]**2+(-coord[2])**2-coxa**2),coxa)
-    alpha = np.arctan2(coord[0],np.sqrt(coord[1]**2+(-coord[2])**2-coxa**2))-np.arctan2(tibia*np.sin(gamma),femur+tibia*np.cos(gamma))
-    angles = np.array([tetta, alpha+np.pi/4., gamma-np.pi/2.])
-    return angles
 
-def solve_BR(coord , coxa , femur , tibia): 
-    D = (coord[1]**2+coord[2]**2-coxa**2+coord[0]**2-femur**2-tibia**2)/(2*tibia*femur)  #siempre <1
-    D = checkdomain(D)
-    gamma = np.arctan2(-np.sqrt(1-D**2),D)
-    tetta = -np.arctan2(-coord[2],coord[1])-np.arctan2(np.sqrt(coord[1]**2+coord[2]**2-coxa**2),-coxa)
-    alpha = np.arctan2(coord[0],np.sqrt(coord[1]**2+coord[2]**2-coxa**2))-np.arctan2(tibia*np.sin(gamma),femur+tibia*np.cos(gamma))
-    angles = np.array([tetta, alpha-np.pi/4., gamma+np.pi/2.])
+def legs_IK(FRcoord , FLcoord , BRcoord , BLcoord , coxa , femur , tibia , kneeConfig = "<<"):
+    if kneeConfig == "<<":
+        signFront = 1.
+        signBack = 1.
+    elif kneeConfig == "><":
+        signFront = 1.
+        signBack = -1.
+    
+    FR_angles = IK(FRcoord , coxa , femur , tibia , signFront)
+    FL_angles = IK(FLcoord , -coxa , femur , tibia , signFront)
+    BR_angles = IK(BRcoord , coxa , femur , tibia , signBack)
+    BL_angles = IK(BLcoord , -coxa , femur , tibia , signBack)
+    
+    angles = np.matrix([[FR_angles[0],FR_angles[1]+np.pi/4.,FR_angles[2]-np.pi/2.],
+                        [FL_angles[0],FL_angles[1]+np.pi/4.,FL_angles[2]-np.pi/2.],
+                        [BR_angles[0],BR_angles[1]-np.pi/4.,BR_angles[2]+np.pi/2.],
+                        [BL_angles[0],BL_angles[1]-np.pi/4.,BL_angles[2]+np.pi/2.]])
+    
     return angles
-
-def solve_BL(coord , coxa , femur , tibia):
-    D = (coord[1]**2+coord[2]**2-coxa**2+coord[0]**2-femur**2-tibia**2)/(2*tibia*femur)  #siempre <1
-    D = checkdomain(D)
-    gamma = np.arctan2(-np.sqrt(1-D**2),D)
-    tetta = -np.arctan2(-coord[2],coord[1])-np.arctan2(np.sqrt(coord[1]**2+coord[2]**2-coxa**2),coxa)
-    alpha = np.arctan2(coord[0],np.sqrt(coord[1]**2+coord[2]**2-coxa**2))-np.arctan2(tibia*np.sin(gamma),femur+tibia*np.cos(gamma))
-    angles = np.array([tetta, alpha-np.pi/4., gamma+np.pi/2.])
-    return angles
-
-    gamma = numpy.arctan2(-numpy.sqrt(1-D**2),D)
-    tetta = -numpy.arctan2(coord[2],coord[1])-numpy.arctan2(numpy.sqrt(coord[1]**2+(-coord[2])**2-coxa**2),coxa)
-    alpha = numpy.arctan2(-coord[0],numpy.sqrt(coord[1]**2+(-coord[2])**2-coxa**2))-numpy.arctan2(tibia*numpy.sin(gamma),femur+tibia*numpy.cos(gamma))
-    angles = numpy.array([-tetta, alpha, gamma])
-    return angles
-
