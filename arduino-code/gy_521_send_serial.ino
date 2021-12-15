@@ -967,6 +967,10 @@ void readAngles()
 //  Serial.print(F(","));
 //  Serial.print(unfiltered_gyro_angle_z, 2);
 //  Serial.print(F("#FIL:"));//Filtered angle
+  Serial.print(accel_angle_y, 2);
+  Serial.print("#");
+  Serial.print(accel_angle_x, 2);
+  Serial.print("#");
   Serial.print(angle_x, 2);
   Serial.print("#");
   Serial.print(angle_y, 2);
